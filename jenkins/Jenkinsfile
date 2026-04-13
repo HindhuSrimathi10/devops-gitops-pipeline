@@ -7,94 +7,65 @@ pipeline {
     }
 
     environment {
-
         IMAGE_NAME = "devops-app"
-
     }
 
     stages {
 
         stage('Checkout') {
-
             steps {
-
-                git 'https://github.com/HindhuSrimathi10/devops-gitops-pipeline.git'
-
+                git branch: 'main',
+                    url: 'https://github.com/HindhuSrimathi10/devops-gitops-pipeline.git'
             }
-
         }
 
         stage('Install Dependencies') {
-
             steps {
-
                 sh '''
                 pip install -r app/requirements.txt
                 '''
             }
-
         }
 
         stage('Run Unit Tests') {
-
             steps {
-
                 sh '''
                 pytest app/
                 '''
             }
-
         }
 
         stage('SonarQube Analysis') {
-
             steps {
-
                 withSonarQubeEnv('SonarQube') {
-
                     sh 'sonar-scanner'
-
                 }
-
             }
-
         }
 
         stage('Quality Gate') {
-
             steps {
-
                 timeout(time: 5, unit: 'MINUTES') {
-
                     waitForQualityGate abortPipeline: true
-
                 }
-
             }
-
         }
 
         stage('Build Docker Image') {
-
             steps {
-
                 sh '''
                 docker build -t $IMAGE_NAME .
                 '''
             }
-
         }
 
         stage('Push Docker Image') {
-
             steps {
-
                 sh '''
-                docker tag $IMAGE_NAME docker.io/<username>/devops-app:latest
-                docker push docker.io/<username>/devops-app:latest
+                docker tag $IMAGE_NAME docker.io/HindhuSrimathi10/devops-app:latest
+                docker push docker.io/HindhuSrimathi10/devops-app:latest
                 '''
             }
-
         }
 
     }
