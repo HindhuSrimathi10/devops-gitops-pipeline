@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     triggers {
-        pollSCM('* * * * *')
+        pollSCM('H/5 * * * *')
     }
 
     options {
@@ -51,10 +51,7 @@ pipeline {
                     ]) {
                         sh '''
                         sonar-scanner \
-                        -Dsonar.projectKey=devops-project \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=$SONAR_TOKEN
+                        -Dsonar.token=$SONAR_TOKEN
                         '''
                     }
                 }
