@@ -34,7 +34,7 @@ spec:
 
       - name: devops-container
 
-        image: docker.io/hindhu/devops-app:latest
+        image: docker.io/hindhusrimathi10/devops-app:latest
 
         ports:
         - containerPort: 5000
